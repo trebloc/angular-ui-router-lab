@@ -200,6 +200,10 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
     * Can you get the wine's name showing now that you know how to grab the correct `id` in the controller? 
       * Hint: Use the provided Factory.
 
+### Other links
+
+1. Fix the `Home` link to go to wines-index.
+  * remove the no longer used "Home" route.
 
 
 ### HTML5 Mode
