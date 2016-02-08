@@ -4,16 +4,18 @@ var app = angular.module('wineApp', []);
 // ROUTES //
 ////////////
 
-app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
+//app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
+
+app.config(function($locationProvider) {
     // $locationProvider.html5Mode({
     //   enabled: true,
     //   requireBase: false
     // });
 
     // return to wine-index if bad route request
-    $urlRouterProvider.otherwise("/");
+    // $urlRouterProvider.otherwise("/");
 
-})
+});
 
 /////////////////
 // CONTROLLERS //
@@ -37,18 +39,18 @@ app.factory('WineService', function() {
 
     WineService.query = function() {
         return ALL_WINES;
-    }
+    };
 
     WineService.get = function(id) {
         var id = parseInt(id);
         return ALL_WINES.find(function(wine) {
             return wine.id == id;
         });
-    }
+    };
 
     return WineService;
 
-})
+});
 
 
 
