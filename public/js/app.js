@@ -18,7 +18,8 @@ function config($stateProvider, $urlRouterProvider) {
 
   $stateProvider.state('home', {
     url: '/',
-    template: 'Home!'
+    template: 'Hello!'
+    //templateUrl: 'templates/wines-index.html'
   });
 
 }
