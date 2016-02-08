@@ -29,7 +29,7 @@ A Single Page App needs a way of responding to user navigation. In order to perf
 1. Include `ui-router`:
     * Run `bower install -s angular-ui-router` in your terminal.
     * Go to `index.html` and uncomment the ui-router script.
-    * Add a `data-ui-view` element inside the `div` that currently has the comment  `<!-- ui-view goes here! -->` (around line 55). 
+    * Add a `data-ui-view` element inside the `div` that currently has the comment  `<!-- ui-view goes here! -->` (around line 55).
 2. Configure your routes:
     * In `app.js`, we need to add the `ui.router` module:
 
@@ -44,12 +44,12 @@ A Single Page App needs a way of responding to user navigation. In order to perf
 
               // for any unmatched URL redirect to /
               $urlRouterProvider.otherwise("/");
-            
+
               $stateProvider.state('home', {
                 url: '/',
                 template: "Home!"
               });
-              
+
             });
         ```
       * Add `$stateProvider` and `$urlRouterProvider` as arguments to the config function.
@@ -58,9 +58,9 @@ A Single Page App needs a way of responding to user navigation. In order to perf
     * A VERY simple ruby server is provided for you.  Run `ruby server.rb` and visit `localhost:3000`.
 
 4. Use a template file instead of a string:
-    * Change `template: 'Home!'` to `templateUrl: '/templates/wines-index.html'`
-    * Refresh, you should see the content of `/templates/wines-index.html`.
-    * Change it back to `template: 'Home!'` for now so it's easy to keep the routes straight. 
+    * Change `template: 'Home!'` to `templateUrl: 'public/templates/wines-index.html'`
+    * Refresh, you should see the content of `public/templates/wines-index.html`.
+    * Change it back to `template: 'Home!'` for now so it's easy to keep the routes straight.
 
 5. Associate a state with a controller and a template file:
     * Let's see how we can attach a template to a specific controller. First, add a new `/wines-index` state in the `$stateProvider`:
@@ -71,10 +71,10 @@ A Single Page App needs a way of responding to user navigation. In order to perf
                 .state('wines-index', {
                 // need to fill this in!
               });
-              
+
             }
         ```
-        
+
     * All we have to do now is fill in this new state.  Add the `wines-index.html` template, the url `"/wines"`, and the name of the controller we want to use. The `'wines-index'` state should now look like this:
 
         `app.js`
@@ -83,16 +83,16 @@ A Single Page App needs a way of responding to user navigation. In order to perf
               $stateProvider
               .state('wines-index', {
                 url: "/wines",
-                templateUrl: "templates/wines-index.html",
+                templateUrl: "public/templates/wines-index.html",
                 controller: "winesIndexController"
               });
-              
+
             }
         ```
 
     * Navigate to `http://localhost:8000/#/wines` to see your new route in action! By default, Angular adds that `#` to the URL. We'll see in a few steps how to use HTML5 mode to get rid of it.
-    
-    
+
+
 6. Now let's add a value to `winesIndexController` (in `app.js`) so we can make sure we know how to have it show up in the view.
 
 
@@ -101,9 +101,9 @@ A Single Page App needs a way of responding to user navigation. In order to perf
           console.log("wine Index");
           this.hello = "Wine index controller is working";
         }
-            
+
     ```
-        
+
     * Update the `wines-index.html` template to include: `{{hello}}` in a tag of your choice!.  When you refresh, you should see: "wine index controller is working!" *Note: This is because the winesIndexController now contains the $scope.hello value.*
 
         `wines-index.html`
@@ -147,7 +147,7 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
     ```
 
     Since we have ui-router, a **better way** is to use `ui-sref`:
-    
+
     ```html
         /* state-based routing with ui-router */
         <a data-ui-sref="wines-show({id: wine.id})">See more</a>
@@ -166,12 +166,12 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
           })
           .state('wines-index', {
             url: '/wines',
-            templateUrl: 'templates/index.html',
+            templateUrl: 'public/templates/index.html',
             controller: 'winesIndexController'
           })
           .state('wines-show', {
             url: '/wines/:id', // the "id" parameter
-            templateUrl: 'templates/wines-show.html',
+            templateUrl: 'public/templates/wines-show.html',
             controller: 'WinesShowController'
           })
         ```
@@ -197,7 +197,7 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
         </div>
         ```
 
-    * Can you get the wine's name showing now that you know how to grab the correct `id` in the controller? 
+    * Can you get the wine's name showing now that you know how to grab the correct `id` in the controller?
       * Hint: Use the provided Factory.
 
 ### Other links
@@ -240,11 +240,11 @@ If you want to try this, setup a node server.
 
 <!--  consider using this
 
-### Stretch: Using A Service. 
+### Stretch: Using A Service.
 
 It's annoying to have to manually loop through our `ALL_WINES` object to find the right wine, and it doesn't really match how we'll use Angular to access data in real-world projects (with `$http`).
 
-Take a look at the block of code that starts with `factory`.  It creates and returns a `wineFactory` object. 
+Take a look at the block of code that starts with `factory`.  It creates and returns a `wineFactory` object.
 We haven't talked about services or factories yet, but for now just know that we'll be able to add the `wineFactory` to any controller and use it inside that controller.  
 
 1. What does the `wineFactory` `query` method do?   What about `get`?
@@ -258,8 +258,8 @@ We haven't talked about services or factories yet, but for now just know that we
         $scope.wines = wineFactory.query();
     }]);
     ```
-    
-1. Inject `wineFactory` into your `WinesShowController`, and use the `wineFactory` object to find just the wine you want to display, instead of using `ALL_WINES`. 
+
+1. Inject `wineFactory` into your `WinesShowController`, and use the `wineFactory` object to find just the wine you want to display, instead of using `ALL_WINES`.
 
 ### Stretch: Prettify || More Routing
 Go crazy. Use Bootstrap to make a fancy index and show page, listing out all the wine info, and showing an image for each of them.
