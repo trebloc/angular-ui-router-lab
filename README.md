@@ -22,9 +22,6 @@ Our data (a list of wines) lives at the bottom of `app.js`. With an API, we coul
 ### Setup
 * Clone this repo.
 * **Make sure to run `bower install`.**
-* Note: We will need to run a local server once we start playing with routing.
-    - In the application directory run `python -m SimpleHTTPServer 8000`.
-    - Then open your browser to "localhost:8000" (or similar).
 
 ## [ui-router](http://angular-ui.github.io/ui-router/)
 A Single Page App needs a way of responding to user navigation. In order to perform "front-end routing", we need a way to capture URL changes and respond to them. For example, if the user clicks on a link to "/wines/1414", we need our Angular application to know how to respond (what templates, controllers, and resources to use). We *don't* always want to make a new request to the server just because we go to a new URL. When we move back into MEAN, our Express server will handle database interactions for our own API. For now, though, Angular will be able to handle all routing and all request to the external API we're using. Let's get started!
@@ -32,33 +29,33 @@ A Single Page App needs a way of responding to user navigation. In order to perf
 1. Include `ui-router`:
     * Run `bower install -s angular-ui-router` in your terminal.
     * Go to `index.html` and uncomment the ui-router script.
-    * Add an `ui-view` element inside the `div` that currently has the comment  `<!-- ui-view goes here! -->` (around line 55). 
+    * Add a `data-ui-view` element inside the `div` that currently has the comment  `<!-- ui-view goes here! -->` (around line 55). 
 2. Configure your routes:
     * In `app.js`, we need to add the `ui.router` module:
 
         ```javascript
-            var app = angular.module('wineApp', ['ui.router']);
+            angular.module('wineApp', ['ui.router']);
         ```
 
     * Next, we need to add our first route. The `$urlProvider.otherwise("/")` line tells the angular app what the default state and url should be.  Find the config section for your app in `app.js`, and add the `$stateProvider` below:
 
         ```javascript
-            app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
+            function config($stateProvider, $urlRouterProvider) {
 
-            $urlRouterProvider.otherwise("/");
+              // for any unmatched URL redirect to /
+              $urlRouterProvider.otherwise("/");
             
-            $stateProvider
-              .state('home', {
+              $stateProvider.state('home', {
                 url: '/',
                 template: "Home!"
               });
               
             });
         ```
-3. Fire up your server:
-    * From your application directory, run `python -m SimpleHTTPServer 8000`.
-    * Then open your browser to "localhost:8000" (or similar).
-    * You should see "Home!"
+      * Add `$stateProvider` and `$urlRouterProvider` as arguments to the config function.
+
+3.  We need a server to proceed further or our templates won't load due to CORS errors.
+    * A VERY simple ruby server is provided for you.  Run `ruby server.rb` and visit `localhost:3000`.
 
 4. Use a template file instead of a string:
     * Change `template: 'Home!'` to `templateUrl: '/templates/wines-index.html'`
@@ -69,50 +66,50 @@ A Single Page App needs a way of responding to user navigation. In order to perf
     * Let's see how we can attach a template to a specific controller. First, add a new `/wines-index` state in the `$stateProvider`:
             `app.js`
         ```javascript
-            app.config(function($locationProvider, $stateProvider, $urlRouterProvider){
+            function config($stateProvider, $urlRouterProvider) {
               $stateProvider
-              .state('wines-index', {
+                .state('wines-index', {
                 // need to fill this in!
-              })
+              });
               
-            })
+            }
         ```
         
     * All we have to do now is fill in this new state.  Add the `wines-index.html` template, the url `"/wines"`, and the name of the controller we want to use. The `'wines-index'` state should now look like this:
 
         `app.js`
         ```javascript
-            app.config(function($locationProvider, $stateProvider, $urlRouterProvider){
+            function config($stateProvider, $urlRouterProvider) {
               $stateProvider
               .state('wines-index', {
                 url: "/wines",
                 templateUrl: "templates/wines-index.html",
-                controller: "WinesIndexCtrl"
-              })
+                controller: "winesIndexController"
+              });
               
-            })
+            }
         ```
 
     * Navigate to `http://localhost:8000/#/wines` to see your new route in action! By default, Angular adds that `#` to the URL. We'll see in a few steps how to use HTML5 mode to get rid of it.
     
     
-6. Now let's add a value to `WinesIndexCtrl` (in `app.js`) so we can make sure we know how to have it show up in the view.
+6. Now let's add a value to `winesIndexController` (in `app.js`) so we can make sure we know how to have it show up in the view.
 
 
     ```js
-        
-            app.controller('WinesIndexCtrl', ['$scope', "WineService", function($scope){
-              console.log("Wine Index");
-              $scope.hello = "wine index controller is working!";
-            }]);
+        function winesIndexController() {
+          console.log("wine Index");
+          this.hello = "Wine index controller is working";
+        }
+            
     ```
         
-    * Update the `wines-index.html` template to include: `{{hello}}` in a `div`, `p`, or `h1` tag (your choice!).  When you refresh, you should see: "wine index controller is working!" *Note: This is because the WinesIndexCtrl now contains the $scope.hello value.*
+    * Update the `wines-index.html` template to include: `{{hello}}` in a tag of your choice!.  When you refresh, you should see: "wine index controller is working!" *Note: This is because the winesIndexController now contains the $scope.hello value.*
 
         `wines-index.html`
         ```html
-        <div class="container" ng-controller="WinesIndexCtrl">
-          <p>{{ hello }}</p>
+        <div class="container" ng-controller="winesIndexController as wines">
+          <p>{{ wines.hello }}</p>
           <ul>
             <li> <!-- wines will go here -->
             </li>
@@ -126,31 +123,9 @@ A Single Page App needs a way of responding to user navigation. In order to perf
 
 <!-- Sneaky review -->
 
-1. What directive would you use to loop through a list of wines?  Use  a directive to display only some of the information about each wine on the page (start with the name).
+1. What directive would you use to loop through a list of wines?  Use a directive to display only some of the information about each wine on the page (start with the name).
 
 1. Once you have the proper data displayed on the wines index page, remove the hello message from the scope and the template.
-
-
-### HTML5 Mode
-Add, or uncomment, the following in your route configuration so that we don't have to use the query hash for navigation:
-```javascript
-    $locationProvider.html5Mode({
-      enabled: true,
-      requireBase: false
-    });
-```
-
-Now instead of linking to `#/wines` or `#/wines/1424` we can link to `/wines` or `/wines/1424`.
-
-Note that this change *will* break page reloads.  A reload in the browser always makes a get request to the server for the current URL. So, the app expects the server to have a `/wines` or a `/wines/1424` route set up.  Ours doesn't; it's just serving `index.html` at the root route because of convention.  When we have an Express backend, we'll use a catch-all `/*` route to capture any requests that should really be handled by Angular (like reloads). The catch-all route will serve the index again so Angular can take over:
-
-```js
-// SERVER.JS
-    app.all('/*', function(req, res, next) {
-        // Just send the index.html to support HTML5Mode
-        res.sendFile('index.html', { root: __dirname });
-    });
-```
 
 ### Wine Show Challenge
 
@@ -183,7 +158,7 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
           .state('wines-index', {
             url: '/wines',
             templateUrl: 'templates/index.html',
-            controller: 'WinesIndexCtrl'
+            controller: 'winesIndexController'
           })
           .state('wines-show', {
             url: '/wines/:id', // the "id" parameter
@@ -215,20 +190,55 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
     * Can you get the wine's name showing now that you know how to grab the correct `id` in the controller? Hint: Get the wine from `ALL_WINES` with that id, and display it by manipulating the `WinesShowCtrl` `$scope`.
 
 
+
+### HTML5 Mode
+Add, or uncomment, the following in your route configuration so that we don't have to use the query hash for navigation:
+```javascript
+    $locationProvider.html5Mode({
+      enabled: true,
+      requireBase: false
+    });
+```
+
+You'll also have to pass `$locationProvider` to the controller.  
+
+```javascript
+config.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
+
+function config($stateProvider, $urlRouterProvider, $locationProvider) {
+```
+
+Now instead of linking to `#/wines` or `#/wines/1424` we can link to `/wines` or `/wines/1424`.
+
+Note that this change *will* break page reloads.  A reload in the browser always makes a get request to the server for the current URL. So, the app expects the server to have a `/wines` or a `/wines/1424` route set up.  Ours doesn't; it's just serving `index.html` at the root route because of convention.  When we have an Express backend, we'll use a catch-all `/*` route to capture any requests that should really be handled by Angular (like reloads). The catch-all route will serve the index again so Angular can take over:
+
+If you want to try this, setup a node server.  
+
+```js
+// SERVER.JS
+    app.all('/*', function(req, res, next) {
+        // Just send the index.html to support HTML5Mode
+        res.sendFile('index.html', { root: __dirname });
+    });
+```
+
+
+
+
 ### Stretch: Using A Service. 
 
 It's annoying to have to manually loop through our `ALL_WINES` object to find the right wine, and it doesn't really match how we'll use Angular to access data in real-world projects (with `$http`).
 
-Take a look at the block of code that starts with `app.factory`.  It creates and returns a `WineService` object. 
+Take a look at the block of code that starts with `factory`.  It creates and returns a `WineService` object. 
 We haven't talked about services or factories yet, but for now just know that we'll be able to add the `WineService` to any controller and use it inside that controller.  
 
 1. What does the `WineService` `query` method do?   What about `get`?
 
-1. Let's take advantage of `WineService`.  [Inject](https://docs.angularjs.org/guide/di) `WineService` into your `WinesIndexCtrl`, and use it to find all the wines instead of using `ALL_WINES` directly.
+1. Let's take advantage of `WineService`.  [Inject](https://docs.angularjs.org/guide/di) `WineService` into your `winesIndexController`, and use it to find all the wines instead of using `ALL_WINES` directly.
 
     `app.js`
     ```js
-    app.controller('WinesIndexCtrl', ['$scope', "WineService", function($scope, WineService) {
+    app.controller('winesIndexController', ['$scope', "WineService", function($scope, WineService) {
         console.log("Wine Index")
         $scope.wines = WineService.query();
     }]);
