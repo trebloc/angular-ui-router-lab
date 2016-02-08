@@ -55,7 +55,7 @@ A Single Page App needs a way of responding to user navigation. In order to perf
       * Add `$stateProvider` and `$urlRouterProvider` as arguments to the config function.
 
 3.  We need a server to proceed further or our templates won't load due to CORS errors.
-    * A VERY simple ruby server is provided for you.  Run `ruby server.rb` and visit `localhost:3000`.
+    * A VERY simple express server is provided for you.  Run `node server.js` and visit `localhost:3000`.  From now on, use this.
 
 4. Use a template file instead of a string:
     * Change `template: 'Home!'` to `templateUrl: 'public/templates/wines-index.html'`
