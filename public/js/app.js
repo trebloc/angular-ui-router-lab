@@ -16,11 +16,16 @@ function config($stateProvider, $urlRouterProvider) {
   // for any unmatched URL redirect to /
   $urlRouterProvider.otherwise("/");
 
-  $stateProvider.state('home', {
-    url: '/',
-    template: 'Hello!'
-    //templateUrl: 'templates/wines-index.html'
-  });
+   $stateProvider
+    .state('home', {
+      url: "/",
+      template: "Home!"
+    })
+    .state('wines-index', {
+      url: "/wines",
+      templateUrl: "templates/wines-index.html",
+      controller: "winesIndexController"
+     });
 
 }
 
@@ -30,6 +35,7 @@ function config($stateProvider, $urlRouterProvider) {
 /////////////////
 function WinesIndexController() {
   console.log("wine Index");
+  this.hello = "Wine index controller is working";
 }
 
 function WinesShowController() {
