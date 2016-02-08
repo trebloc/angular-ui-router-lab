@@ -238,33 +238,33 @@ If you want to try this, setup a node server.
 ```
 
 
-
+<!--  consider using this
 
 ### Stretch: Using A Service. 
 
 It's annoying to have to manually loop through our `ALL_WINES` object to find the right wine, and it doesn't really match how we'll use Angular to access data in real-world projects (with `$http`).
 
-Take a look at the block of code that starts with `factory`.  It creates and returns a `WineService` object. 
-We haven't talked about services or factories yet, but for now just know that we'll be able to add the `WineService` to any controller and use it inside that controller.  
+Take a look at the block of code that starts with `factory`.  It creates and returns a `wineFactory` object. 
+We haven't talked about services or factories yet, but for now just know that we'll be able to add the `wineFactory` to any controller and use it inside that controller.  
 
-1. What does the `WineService` `query` method do?   What about `get`?
+1. What does the `wineFactory` `query` method do?   What about `get`?
 
-1. Let's take advantage of `WineService`.  [Inject](https://docs.angularjs.org/guide/di) `WineService` into your `winesIndexController`, and use it to find all the wines instead of using `ALL_WINES` directly.
+1. Let's take advantage of `wineFactory`.  [Inject](https://docs.angularjs.org/guide/di) `wineFactory` into your `winesIndexController`, and use it to find all the wines instead of using `ALL_WINES` directly.
 
     `app.js`
     ```js
-    app.controller('winesIndexController', ['$scope', "WineService", function($scope, WineService) {
+    app.controller('winesIndexController', ['$scope', "wineFactory", function($scope, wineFactory) {
         console.log("Wine Index")
-        $scope.wines = WineService.query();
+        $scope.wines = wineFactory.query();
     }]);
     ```
     
-1. Inject `WineService` into your `WinesShowController`, and use the `WineService` object to find just the wine you want to display, instead of using `ALL_WINES`. 
+1. Inject `wineFactory` into your `WinesShowController`, and use the `wineFactory` object to find just the wine you want to display, instead of using `ALL_WINES`. 
 
 ### Stretch: Prettify || More Routing
 Go crazy. Use Bootstrap to make a fancy index and show page, listing out all the wine info, and showing an image for each of them.
 
-Alternatively, try writing some functions in your controllers (attached as properties of $scope) that modify the WineService to simulate CRUD operations. What would you need for this? A button? An [event handler](https://docs.angularjs.org/api/ng/directive/ngClick)?
+Alternatively, try writing some functions in your controllers (attached as properties of $scope) that modify the wineFactory to simulate CRUD operations. What would you need for this? A button? An [event handler](https://docs.angularjs.org/api/ng/directive/ngClick)?
 
 Here are some of the wine fields we have to work with:
 
@@ -283,3 +283,5 @@ Here are some of the wine fields we have to work with:
     "picture": "http://s3-us-west-2.amazonaws.com/sandboxapi/le_doyenne.jpg"
 }
 ```
+
+-->
