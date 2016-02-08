@@ -163,15 +163,15 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
           .state('wines-show', {
             url: '/wines/:id', // the "id" parameter
             templateUrl: 'templates/wines-show.html',
-            controller: 'WinesShowCtrl'
+            controller: 'WinesShowController'
           })
         ```
 
-    * Next, we need to inject a new module into the `WinesShowCtrl` called `$stateParams`. We'll also update the console log to check out what `$stateParams` is:
+    * Next, we need to inject a new module into the `WinesShowController` called `$stateParams`. We'll also update the console log to check out what `$stateParams` is:
 
         `app.js`
         ```javascript
-        app.controller('WinesShowCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {
+        app.controller('WinesShowController', ['$scope', '$stateParams', function($scope, $stateParams) {
             console.log("Wine Show:", $stateParams);
         }])
         ```
@@ -182,12 +182,12 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
 
         `templates/wines-show.html`
         ```html
-        <div class="container" ng-controller="WinesShowCtrl">
+        <div class="container" ng-controller="WinesShowController">
           <h2>{{ wine.name }}</h2>
         </div>
         ```
 
-    * Can you get the wine's name showing now that you know how to grab the correct `id` in the controller? Hint: Get the wine from `ALL_WINES` with that id, and display it by manipulating the `WinesShowCtrl` `$scope`.
+    * Can you get the wine's name showing now that you know how to grab the correct `id` in the controller? Hint: Get the wine from `ALL_WINES` with that id, and display it by manipulating the `WinesShowController` `$scope`.
 
 
 
@@ -244,7 +244,7 @@ We haven't talked about services or factories yet, but for now just know that we
     }]);
     ```
     
-1. Inject `WineService` into your `WinesShowCtrl`, and use the `WineService` object to find just the wine you want to display, instead of using `ALL_WINES`. 
+1. Inject `WineService` into your `WinesShowController`, and use the `WineService` object to find just the wine you want to display, instead of using `ALL_WINES`. 
 
 ### Stretch: Prettify || More Routing
 Go crazy. Use Bootstrap to make a fancy index and show page, listing out all the wine info, and showing an image for each of them.
