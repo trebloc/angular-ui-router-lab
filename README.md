@@ -117,15 +117,24 @@ A Single Page App needs a way of responding to user navigation. In order to perf
         </div>
         ```
 
+
+
 ### Wine List Challenge
 
 1. Can you display a list of all the wines on the wines index page? (Start by using the mock data object called `ALL_WINES` at the bottom of `app.js`).
-
-<!-- Sneaky review -->
+  * Note that a factory is provided for you.  
+  <details><summary>Hint:</summary>
+  ```js
+  // winesIndexController
+  this.wineList = wineFactory.query();
+  ```  
+  </details>
 
 1. What directive would you use to loop through a list of wines?  Use a directive to display only some of the information about each wine on the page (start with the name).
 
 1. Once you have the proper data displayed on the wines index page, remove the hello message from the scope and the template.
+
+
 
 ### Wine Show Challenge
 
@@ -134,14 +143,14 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
 1. For each of your wines on the `wines#index` page, let's add a link.  We could add it with Angular string interpolation:
     ``` html
         /* Normal string interpolation */
-        <h5><a href="/wines/{{wine.id}}">{{wine.name}}</a></h5>
+        <h5><a href="#/wines/{{wine.id}}">{{wine.name}}</a></h5>
     ```
 
     Since we have ui-router, a **better way** is to use `ui-sref`:
     
     ```html
         /* state-based routing with ui-router */
-        <a ui-sref="wines-show({id: wine.id})">See more</a>
+        <a data-ui-sref="wines-show({id: wine.id})">See more</a>
     ```
 
 1. When a user navigates to `/wines/:id` we want to display the wine with the matching id!
@@ -171,23 +180,25 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
 
         `app.js`
         ```javascript
-        app.controller('WinesShowController', ['$scope', '$stateParams', function($scope, $stateParams) {
-            console.log("Wine Show:", $stateParams);
-        }])
+        winesShowController.$inject = ['wineFactory', '$stateParams'];
+        function winesShowController(wineFactory, $stateParams) {
+          console.log("wine Show", $stateParams);
+        }
         ```
 
-1. Now that we have access the url parameters in the controller, let's update the view.  
+1. Now that we have access to the url parameters in the controller, let's update the view.  
 
     * In the template for the wine show page, we currently have just a message saying "Welcome to Wine Show".  Add a div to attach the correct controller and a header that will display the name of the wine whose id matches the url.
 
         `templates/wines-show.html`
         ```html
-        <div class="container" ng-controller="WinesShowController">
-          <h2>{{ wine.name }}</h2>
+        <div class="container" ng-controller="winesShowController as wine">
+          <h2>{{ wine.info.name }}</h2>
         </div>
         ```
 
-    * Can you get the wine's name showing now that you know how to grab the correct `id` in the controller? Hint: Get the wine from `ALL_WINES` with that id, and display it by manipulating the `WinesShowController` `$scope`.
+    * Can you get the wine's name showing now that you know how to grab the correct `id` in the controller? 
+      * Hint: Use the provided Factory.
 
 
 
