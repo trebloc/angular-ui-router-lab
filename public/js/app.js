@@ -11,18 +11,17 @@ angular.module('WineApp', [])
 // ROUTES //
 ////////////
 
-function config() {
-    // $locationProvider.html5Mode({
-    //   enabled: true,
-    //   requireBase: false
-    // });
+config.$inject = ['$stateProvider', '$urlRouterProvider']; // minification protection
+function config($stateProvider, $urlRouterProvider) {
+  // for any unmatched URL redirect to /
+  $urlRouterProvider.otherwise("/");
 
-    // return to wine-index if bad route request
-    // $urlRouterProvider.otherwise("/");
+  $stateProvider.state('home', {
+    url: '/',
+    template: 'Home!'
+  });
 
 }
-
-
 
 
 /////////////////
