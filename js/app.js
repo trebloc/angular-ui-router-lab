@@ -11,9 +11,7 @@ angular.module('wineApp', [])
 // ROUTES //
 ////////////
 
-//app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
-
-function config($locationProvider) {
+function config() {
     // $locationProvider.html5Mode({
     //   enabled: true,
     //   requireBase: false
