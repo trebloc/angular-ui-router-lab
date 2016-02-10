@@ -1,4 +1,4 @@
-angular.module('WineApp', [])
+angular.module('WineApp', ['ui.router'])
   .controller('WinesIndexController', WinesIndexController)
   .controller('WinesShowController', WinesShowController)
   .factory('WineFactory', WineFactory)
@@ -23,9 +23,9 @@ function config($stateProvider, $urlRouterProvider) {
     })
     .state('wines-index', {
       url: "/wines",
-      templateUrl: "templates/wines-index.html",
-      controller: "winesIndexController"
-     });
+      templateUrl: "public/templates/wines-index.html",
+      controller: "WinesIndexController"
+    });
 
 }
 
@@ -33,11 +33,15 @@ function config($stateProvider, $urlRouterProvider) {
 /////////////////
 // CONTROLLERS //
 /////////////////
-function WinesIndexController() {
+
+// use $inject in case of minification
+WinesIndexController.$inject = ['WineFactory'];
+function WinesIndexController(WineFactory) {
   console.log("wine Index");
   this.hello = "Wine index controller is working";
-}
 
+  this.wineList = WineFactory.query();
+}
 function WinesShowController() {
   console.log("wine Show");
 }
@@ -53,17 +57,17 @@ function WineFactory() {
     var wines = {};
 
     wines.query = function() {
-        return ALL_WINES;
+      return ALL_WINES;
     };
 
     wines.get = get;
-
     function get(id) {
       var id = parseInt(id);
       return ALL_WINES.find(function(wine) {
         return wine.id == id;
       });
-    };
+    }
+
 
     return wines;
 
