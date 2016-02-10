@@ -53,6 +53,11 @@ A Single Page App needs a way of responding to user navigation. In order to perf
             });
         ```
       * Add `$stateProvider` and `$urlRouterProvider` as arguments to the config function.
+      * Above the function $inject these dependencies.
+      ```js
+      config.$inject = ['$stateProvider', '$urlRouterProvider'];
+      function config($stateProvider, $urlRouterProvider) {
+      ```
 
 3.  We need a server to proceed further or our templates won't load due to CORS errors.
     * A VERY simple express server is provided for you.  Run `node server.js` and visit `localhost:3000`.  From now on, use this.
