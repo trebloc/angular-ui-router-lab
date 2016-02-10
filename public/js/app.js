@@ -1,7 +1,7 @@
 angular.module('wineApp', [])
-  .controller('winesIndexController', winesIndexController)
-  .controller('winesShowController', winesShowController)
-  .factory('wineFactory', wineFactory)
+  .controller('WinesIndexController', WinesIndexController)
+  .controller('WinesShowController', WinesShowController)
+  .factory('WineFactory', WineFactory)
   .config(config);
 
 
@@ -28,11 +28,11 @@ function config() {
 /////////////////
 // CONTROLLERS //
 /////////////////
-function winesIndexController() {
+function WinesIndexController() {
   console.log("wine Index");
 }
 
-function winesShowController() {
+function WinesShowController() {
   console.log("wine Show");
 }
 
@@ -42,7 +42,7 @@ function winesShowController() {
 // FACTORYS (MODELS) //
 ///////////////////////
 
-function wineFactory() {
+function WineFactory() {
 
     var wines = {};
 
@@ -50,11 +50,13 @@ function wineFactory() {
         return ALL_WINES;
     };
 
-    wines.get = function(id) {
-        var id = parseInt(id);
-        return ALL_WINES.find(function(wine) {
-            return wine.id == id;
-        });
+    wines.get = get;
+
+    function get(id) {
+      var id = parseInt(id);
+      return ALL_WINES.find(function(wine) {
+        return wine.id == id;
+      });
     };
 
     return wines;
