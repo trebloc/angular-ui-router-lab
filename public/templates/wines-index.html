@@ -3,6 +3,6 @@ Welcome to Wine Index (templates/wines-index.html)
 <hr>
 <hr>
 <ul data-ng-repeat='wine in wines.wineList'>
-  <li>{{wine.name}} - {{wine.year}}</li>
+  <li><a data-ui-sref="wines-show({id: wine.id})">{{wine.name}}</a> - {{wine.year}}</li>
 </ul>
 </div>

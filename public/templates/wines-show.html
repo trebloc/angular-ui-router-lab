@@ -1,1 +1,12 @@
-Welcome to Wine Show (templates/wines-show.html)
+<div class="container">
+  <h2>{{ wine.info.name }}</h2>
+
+  <img src="{{wine.info.picture}}"></img>
+  <ul>
+    <li>Year: {{wine.info.year}}</li>
+    <li>Grapes: {{wine.info.grapes}}</li>
+    <li>Country: {{wine.info.country}}</li>
+    <li>Description: {{wine.info.description}}</li>
+  </ul>
+
+</div>

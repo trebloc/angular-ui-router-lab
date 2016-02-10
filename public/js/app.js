@@ -25,7 +25,13 @@ function config($stateProvider, $urlRouterProvider) {
       url: "/wines",
       templateUrl: "public/templates/wines-index.html",
       controller: "WinesIndexController"
+    })
+    .state('wines-show', {
+      url: '/wines/:id', // the "id" parameter
+      templateUrl: 'public/templates/wines-show.html',
+      controller: 'WinesShowController as wine',
     });
+
 
 }
 
@@ -42,8 +48,11 @@ function WinesIndexController(WineFactory) {
 
   this.wineList = WineFactory.query();
 }
-function WinesShowController() {
-  console.log("wine Show");
+
+WinesShowController.$inject = ['WineFactory', '$stateParams'];
+function WinesShowController(WineFactory, $stateParams) {
+  console.log("Wine Show", $stateParams);
+  this.info = WineFactory.get($stateParams.id);
 }
 
 
