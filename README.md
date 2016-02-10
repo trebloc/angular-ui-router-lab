@@ -34,7 +34,7 @@ A Single Page App needs a way of responding to user navigation. In order to perf
     * In `app.js`, we need to add the `ui.router` module:
 
         ```javascript
-            angular.module('wineApp', ['ui.router']);
+            angular.module('WineApp', ['ui.router']);
         ```
 
     * Next, we need to add our first route. The `$urlProvider.otherwise("/")` line tells the angular app what the default state and url should be.  Find the config section for your app in `app.js`, and add the `$stateProvider` below:
@@ -89,7 +89,7 @@ A Single Page App needs a way of responding to user navigation. In order to perf
               .state('wines-index', {
                 url: "/wines",
                 templateUrl: "public/templates/wines-index.html",
-                controller: "winesIndexController"
+                controller: "WinesIndexController"
               });
 
             }
@@ -102,7 +102,7 @@ A Single Page App needs a way of responding to user navigation. In order to perf
 
 
     ```js
-        function winesIndexController() {
+        function WinesIndexController() {
           console.log("wine Index");
           this.hello = "Wine index controller is working";
         }
@@ -113,7 +113,7 @@ A Single Page App needs a way of responding to user navigation. In order to perf
 
         `wines-index.html`
         ```html
-        <div class="container" ng-controller="winesIndexController as wines">
+        <div class="container" ng-controller="WinesIndexController as wines">
           <p>{{ wines.hello }}</p>
           <ul>
             <li> <!-- wines will go here -->
@@ -131,7 +131,7 @@ A Single Page App needs a way of responding to user navigation. In order to perf
   <details><summary>Hint:</summary>
   ```js
   // winesIndexController
-  this.wineList = wineFactory.query();
+  this.wineList = WineFactory.query();
   ```  
   </details>
 
@@ -148,7 +148,7 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
 1. For each of your wines on the `wines#index` page, let's add a link.  We could add it with Angular string interpolation:
     ``` html
         /* Normal string interpolation */
-        <h5><a href="#/wines/{{wine.id}}">{{wine.name}}</a></h5>
+        <a href="#/wines/{{wine.id}}">{{wine.name}}</a>
     ```
 
     Since we have ui-router, a **better way** is to use `ui-sref`:
@@ -172,12 +172,13 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
           .state('wines-index', {
             url: '/wines',
             templateUrl: 'public/templates/index.html',
-            controller: 'winesIndexController'
+            controller: 'WinesIndexController'
           })
           .state('wines-show', {
             url: '/wines/:id', // the "id" parameter
             templateUrl: 'public/templates/wines-show.html',
-            controller: 'WinesShowController'
+            controller: 'WinesShowController',
+            controllerAs: 'wine'
           })
         ```
 
@@ -185,8 +186,8 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
 
         `app.js`
         ```javascript
-        winesShowController.$inject = ['wineFactory', '$stateParams'];
-        function winesShowController(wineFactory, $stateParams) {
+        winesShowController.$inject = ['WineFactory', '$stateParams'];
+        function WinesShowController(wineFactory, $stateParams) {
           console.log("wine Show", $stateParams);
         }
         ```
@@ -197,19 +198,16 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
 
         `templates/wines-show.html`
         ```html
-        <div class="container" ng-controller="winesShowController as wine">
           <h2>{{ wine.info.name }}</h2>
-        </div>
         ```
+      > Where did `wine` come from here?  See the controllerAs parameter in the code for this state.  This obviates the need to declare a ng-controller in the view which makes it more flexible.  Compare to the index view.
 
     * Can you get the wine's name showing now that you know how to grab the correct `id` in the controller?
-      * Hint: Use the provided Factory.
-
 ### Other links
 
 1. Fix the `Home` link to go to wines-index.
   * remove the no longer used "Home" route.
-
+1. In the wines-show view, add a Back button.
 
 ### HTML5 Mode
 Add, or uncomment, the following in your route configuration so that we don't have to use the query hash for navigation:

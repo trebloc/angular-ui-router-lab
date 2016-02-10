@@ -1,4 +1,4 @@
-angular.module('wineApp', [])
+angular.module('WineApp', [])
   .controller('WinesIndexController', WinesIndexController)
   .controller('WinesShowController', WinesShowController)
   .factory('WineFactory', WineFactory)
