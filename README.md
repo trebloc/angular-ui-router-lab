@@ -187,7 +187,7 @@ We'll handle urls for each individual wine with a `wine#show` route. To setup a 
         `app.js`
         ```javascript
         winesShowController.$inject = ['WineFactory', '$stateParams'];
-        function WinesShowController(wineFactory, $stateParams) {
+        function WinesShowController(WineFactory, $stateParams) {
           console.log("wine Show", $stateParams);
         }
         ```
